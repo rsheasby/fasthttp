@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/valyala/bytebufferpool"
+	"github.com/rsheasby/bytebufferpool"
 )
 
 var strFoobar = []byte("foobar.com")

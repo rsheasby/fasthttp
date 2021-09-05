@@ -13,7 +13,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/valyala/tcplisten"
+	"github.com/rsheasby/tcplisten"
 )
 
 // Listen returns TCP listener with SO_REUSEPORT option set.
@@ -26,7 +26,7 @@ import (
 //
 // - TCP_FASTOPEN. See https://lwn.net/Articles/508865/ for details.
 //
-// Use https://github.com/valyala/tcplisten if you want customizing
+// Use https://github.com/rsheasby/tcplisten if you want customizing
 // these options.
 //
 // Only tcp4 and tcp6 networks are supported.
