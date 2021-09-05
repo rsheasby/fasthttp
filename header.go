@@ -1899,6 +1899,8 @@ func (h *RequestHeader) parseFirstLine(buf []byte) (int, error) {
 			return 0, fmt.Errorf("requestURI cannot be empty")
 		}
 		return 0, fmt.Errorf("requestURI cannot be empty in %q", buf)
+	} else if bytes.Equal(b[n+1:], []byte("RTSP/1.1")) {
+		protoStr = b[n+1:]
 	} else if !bytes.Equal(b[n+1:], strHTTP11) {
 		h.noHTTP11 = true
 		protoStr = b[n+1:]
