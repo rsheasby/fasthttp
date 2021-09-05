@@ -585,13 +585,11 @@ func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool {
 // SetProtocol sets HTTP response protocol.
 func (h *ResponseHeader) SetProtocol(method string) {
 	h.proto = append(h.proto[:0], method...)
-	h.noHTTP11 = !bytes.Equal(h.proto, strHTTP11)
 }
 
 // SetProtocolBytes sets HTTP response protocol.
 func (h *ResponseHeader) SetProtocolBytes(method []byte) {
 	h.proto = append(h.proto[:0], method...)
-	h.noHTTP11 = !bytes.Equal(h.proto, strHTTP11)
 }
 
 // Len returns the number of headers set,
@@ -1642,7 +1640,11 @@ func (h *ResponseHeader) AppendBytes(dst []byte) []byte {
 	if statusCode < 0 {
 		statusCode = StatusOK
 	}
-	dst = append(dst, statusLine(statusCode)...)
+	sl := statusLine(statusCode)
+	if len(h.proto) != 0 {
+		sl = bytes.ReplaceAll(sl, strHTTP11, h.proto)
+	}
+	dst = append(dst, sl...)
 
 	server := h.Server()
 	if len(server) != 0 {
@@ -1900,9 +1902,6 @@ func (h *RequestHeader) parseFirstLine(buf []byte) (int, error) {
 	} else if !bytes.Equal(b[n+1:], strHTTP11) {
 		h.noHTTP11 = true
 		protoStr = b[n+1:]
-	}
-	if len(h.proto) != 0 {
-		protoStr = h.proto
 	}
 
 	h.proto = append(h.proto[:0], protoStr...)
