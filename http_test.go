@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rsheasby/bytebufferpool"
+	"github.com/valyala/bytebufferpool"
 )
 
 func TestResponseEmptyTransferEncoding(t *testing.T) {

@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rsheasby/bytebufferpool"
+	"github.com/valyala/bytebufferpool"
 )
 
 // Request represents HTTP request.

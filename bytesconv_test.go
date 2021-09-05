@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rsheasby/bytebufferpool"
+	"github.com/valyala/bytebufferpool"
 )
 
 func TestAppendHTMLEscape(t *testing.T) {
