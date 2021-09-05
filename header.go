@@ -37,6 +37,7 @@ type ResponseHeader struct {
 	contentLengthBytes    []byte
 	secureErrorLogMessage bool
 
+	proto       []byte
 	contentType []byte
 	server      []byte
 
@@ -579,6 +580,18 @@ func (h *RequestHeader) HasAcceptEncodingBytes(acceptEncoding []byte) bool {
 		return true
 	}
 	return ae[n-1] == ' '
+}
+
+// SetProtocol sets HTTP response protocol.
+func (h *ResponseHeader) SetProtocol(method string) {
+	h.proto = append(h.proto[:0], method...)
+	h.noHTTP11 = !bytes.Equal(h.proto, strHTTP11)
+}
+
+// SetProtocolBytes sets HTTP response protocol.
+func (h *ResponseHeader) SetProtocolBytes(method []byte) {
+	h.proto = append(h.proto[:0], method...)
+	h.noHTTP11 = !bytes.Equal(h.proto, strHTTP11)
 }
 
 // Len returns the number of headers set,
@@ -1887,6 +1900,9 @@ func (h *RequestHeader) parseFirstLine(buf []byte) (int, error) {
 	} else if !bytes.Equal(b[n+1:], strHTTP11) {
 		h.noHTTP11 = true
 		protoStr = b[n+1:]
+	}
+	if len(h.proto) != 0 {
+		protoStr = h.proto
 	}
 
 	h.proto = append(h.proto[:0], protoStr...)
